@@ -29,4 +29,7 @@ public  class Dice {
 }
 
 class FraudDice extends Dice{
-	}
+	 //사기 주사위의 모드를 나타내는 정수. 0은 일반, 1은 약함, 2는 강함 모드이며, 나머지는 오류 처리한다.
+	int fraudLevel;
+	
+}

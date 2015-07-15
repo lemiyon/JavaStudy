@@ -13,10 +13,69 @@
  */
 package diceGame;
 
+
 public class Player {
+	private String getName() {
+		return name;
+	}
+
+	private void setName(String name) {
+		this.name = name;
+	}
+
+	private Dice getDice() {
+		return dice;
+	}
+
+	private void setDice(Dice dice) {
+		this.dice = dice;
+	}
+
+	private int getScore() {
+		return score;
+	}
+
+	private void setScore(int score) {
+		this.score = score;
+	}
+
 	String name;
 	Dice dice;
 	int score;
 	
+	//이름을 받는 생성자. Player객체를 초기화 한다.
+	Player(String name){
+		//사용자가 입력한 이름으로 이름을 만들어 준다.
+		this.name = name;
+		//주사위를 만든다. 일반적인 주사위이다.
+		dice = new Dice();
+		score = 0;
+	}
+	
+	int tossDice()
+	{
+		
+		return 0;
+	}
+	
+}
+
+class FraudPlayer extends Player
+{
+	//이름을 받는 생성자. FraudPlayer객체를 초기화 한다.
+	FraudPlayer(String name)
+	{
+		super(name);
+	}
+	
+	
+	int tossDice(){
+		return 0;
+	}
+
+	int adjustFraudDiceLevel()
+	{
+		return 0;
+	}
 	
 }
