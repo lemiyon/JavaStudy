@@ -3,6 +3,8 @@
  */
 package diceGame;
 
+import java.util.Random;
+
 /**
  * @author bola - kim
  * 1. 주사위(Dice, FraudDice)
@@ -26,10 +28,65 @@ package diceGame;
  */
 public  class Dice {
 
+	public int toss()
+	{
+		Random random = new Random();
+		return random.nextInt(5) + 1;
+	}
 }
 
 class FraudDice extends Dice{
 	 //사기 주사위의 모드를 나타내는 정수. 0은 일반, 1은 약함, 2는 강함 모드이며, 나머지는 오류 처리한다.
-	int fraudLevel;
+	public enum FraudMode{
+		WEAK(1), NORMAL(0), STRONG(2);
+		
+		int mode;
+		FraudMode(int i)
+		{
+			this.mode = i;
+		}
+		public int getMode()
+		{
+			return mode;
+		}
+		
+	};
 	
+	FraudMode diceMode;
+	
+	FraudDice(){
+		diceMode = FraudMode.NORMAL;
+	}
+	
+	public int toss()
+	{
+		int score = super.toss();
+		
+		switch(diceMode.name())
+		{
+		case "NORMAL":
+			break;
+		case "WEAK":
+			if(score >= 5)
+			score = super.toss();
+			break;
+		case "STRONG":
+			if(score <= 2)
+				score = super.toss();
+			break;
+		};
+		
+		return score;
+	}
+	
+	public FraudMode getMode(){
+	
+		return diceMode;
+	
+	}
+	
+	void setMode(FraudMode newMode)
+	{
+		diceMode = newMode;
+	}
 }

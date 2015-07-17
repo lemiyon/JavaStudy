@@ -13,69 +13,83 @@
  */
 package diceGame;
 
+import diceGame.FraudDice.FraudMode;
 
 public class Player {
-	private String getName() {
-		return name;
-	}
-
-	private void setName(String name) {
-		this.name = name;
-	}
-
-	private Dice getDice() {
-		return dice;
-	}
-
-	private void setDice(Dice dice) {
-		this.dice = dice;
-	}
-
-	private int getScore() {
-		return score;
-	}
-
-	private void setScore(int score) {
-		this.score = score;
-	}
 
 	String name;
 	Dice dice;
 	int score;
 	
-	//이름을 받는 생성자. Player객체를 초기화 한다.
+	//각각에 대한 get, set 메소드
+	public String getName() {
+		return name;
+	}
+
+	public int getScore() {
+		return score;
+	}
+	//이름을 받지 않는 생성자. FraudPlayer와 Player의 공통 부분인 score초기화를 한다.
+	Player(){
+		this.score = 0;
+	};
+
+	//이름을 받는 생성자. Player객체의 이름, 주사위(dice) 초기화 한다.
 	Player(String name){
 		//사용자가 입력한 이름으로 이름을 만들어 준다.
+		this(); //score를 0으로 초기화 한다.
 		this.name = name;
-		//주사위를 만든다. 일반적인 주사위이다.
-		dice = new Dice();
-		score = 0;
+		//일반 플레이어이므로 
+		this.dice = new Dice();
 	}
 	
-	int tossDice()
+	
+	void tossDice()
 	{
-		
-		return 0;
+		score += dice.toss();
 	}
 	
 }
 
 class FraudPlayer extends Player
 {
-	//이름을 받는 생성자. FraudPlayer객체를 초기화 한다.
-	FraudPlayer(String name)
-	{
-		super(name);
-	}
+	FraudDice dice;
 	
-	
-	int tossDice(){
-		return 0;
+	//FraudPlayer의 생성자. 점수는 
+	FraudPlayer(String name) {
+		this.name = name;
+		this.dice = new FraudDice();
+		// TODO Auto-generated constructor stub
 	}
 
-	int adjustFraudDiceLevel()
+	void tossDice(){
+		adjustFraudDiceLevel(Judge.getScore(this));
+		score += dice.toss();
+	}
+
+	void adjustFraudDiceLevel(int othersScore)
 	{
-		return 0;
+		if((score - othersScore) >= 6)
+		{
+			setDiceMode(FraudMode.WEAK);
+		}
+		else if((score - othersScore) < 0)
+		{
+			setDiceMode(FraudMode.STRONG);
+		}
+		else
+		{
+			setDiceMode(FraudMode.NORMAL);
+		}
 	}
 	
+	public FraudMode getDiceMode()
+	{
+		return dice.getMode();
+	}
+	
+	void setDiceMode(FraudMode newMode)
+	{
+		dice.setMode(newMode);
+	}
 }

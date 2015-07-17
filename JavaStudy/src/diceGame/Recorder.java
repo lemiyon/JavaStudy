@@ -1,4 +1,8 @@
 package diceGame;
+
+import java.util.HashMap;
+import java.util.Vector;
+
 /*
  * 4. 기록원(Recorder)
 
@@ -30,9 +34,38 @@ ex)
 
  
  */
-import java.util.Hashtable;
 
 public class Recorder {
-	Hashtable<String, Integer> scores; //선수명과 점수를 저장하는 Map클래스 중 하나인 Hashtable. 
 
+	//게임의 중간 과정을 기록한다.
+	Vector<String> logs;
+
+	
+	Recorder()
+	{
+		logs = new Vector<String>();
+	}
+	
+	void recordGame(Player player1, Player player2)
+	{
+	String log = "";
+	log += "[" + player1.getName() + ":" + player1.getScore() + showDiceState(player1);
+	log += player2.getName() + ":" + player2.getScore() + showDiceState(player2) + "]";
+	System.out.println(log);
+	logs.addElement(log);
+	
+	}
+	
+	//Player가 FraudPlayer인지 여부를 따져 맞으면 주사위의 세기(모드)를 받아온다.
+	String showDiceState(Player player)
+	{
+		if(player.getClass() == FraudPlayer.class)
+		{
+			return "[" + ((FraudPlayer) player).getDiceMode().name() +"] ";
+		}
+		else
+			return "";
+	}
+	
+	
 }
