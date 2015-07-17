@@ -3,7 +3,7 @@
  */
 package diceGame;
 
-import java.util.List;
+
 import java.util.Scanner;
 
 /**
@@ -22,15 +22,19 @@ import java.util.Scanner;
  */
 public class Judge {
 	
-//승패 판정시 필요한 판정원. 게임 당 하나만 있으면 된다.
+	//승패 판정시 필요한 판정원. 게임 당 하나만 있으면 된다.
 	static Recorder recorder;
+	//게임에 참가하는 선수(플레이어)
 	static Player player1, player2;
+	//사용자의 입력을 받을 스캐너. 선수들의 이름과 라운드 회수를 받는다.
 	Scanner scanner;
-	public int maxRound = 5; //초기치 5번까지만 던질 수 있음을 나타냄.
+	//라운드 회수를 입력받는다. 음수와 0을 제외한 정수범위내로 라운드 수를 받는다.
+	int maxRound; 
 
 	//게임 시작을 준비한다. 여기서는 다음과 같은 행동을 한다. 
 	//1. 두 선수 생성
 	//2. 기록원(Recorder) 초기화
+	//3. 주사위를 던질 라운드 수 묻
 	void initGame(){
 		//Greeting!
 		System.out.println("Welcome to Bola's Dice Game!");
@@ -51,7 +55,7 @@ public class Judge {
 		playerName2 = scanner.nextLine();
 		//입력받은 이름으로 선수들을 생성한다.
 		player1 = new Player(playerName1);
-		player2 = new Player(playerName2);
+		player2 = new FraudPlayer(playerName2);
 
 	};
 	
@@ -63,6 +67,7 @@ public class Judge {
 		return true;
 	}
 	
+	//사용자에게 얼마나 많은 라운드의 게임을 실행할 지 물어본다.
 	void initNumberOfRound()
 	{
 	System.out.println("How many round do you want for this game?");	
@@ -79,16 +84,16 @@ public class Judge {
 		{
 			player1.tossDice(); //플레이어 1이 주사위를 던진다.
 			player2.tossDice(); //플레이어 2가 주사위를 던진다.
-			recorder.recordGame(player1, player2); //기록관이 이 둘의 이름, 점수를 기록한다. 그리고 출력한다
-			round++;
+			recorder.recordGame(player1, player2); //기록관이 이 둘의 이름, 점수를 기록한다.
+			round++; //두 선수가 모두 주사위를 한번씩 던지고 나면, 라운드 회수를 증가시킨다.
 		}
 
 		gameResult();
-		playAgain();
 		
 	}; 
-
-	 void judgeWinner(){
+	
+	 //게임을 정산하고 누가 승인지 말해준다.
+	 void gameResult(){
 		 if(player1.getScore() > player2.getScore()){
 			 System.out.println(player1.getName() + " Won!!");
 		 }
@@ -100,17 +105,10 @@ public class Judge {
 		 {
 			 System.out.println(player2.getName() + " Won!!");
 		 }
-		 
 	 };
-	 //게임을 정산하고 누가 위너인지 말해준다.
-	 void gameResult(){
-		 judgeWinner();
-	 };
-		//다시 한 번 게임을 진행할 지 물어본다.
-	 void playAgain(){
-		 System.out.println("Would you like to play again??\n(players will not be changed.)");
-	 };
-
+	
+	 
+	 //FraudPlayer가 주사위를 던지기 전, 주사위의 레벨을 정하기 위해 상대방의 점수를 알아오기 위한 함 
 	 public static int getScore(Player player)
 	 {
 		 if(player.equals(player1)) return player2.getScore();
