@@ -12,9 +12,11 @@ public class GameMain {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
+		//게임을 시작하기 위한 심판(Judge)객체를 만든다.
 		Judge judge = new Judge();
 		if(!judge.equals(null))
 		{
+			//심판 객체가 제대로 생성되었으면, 심판 객체를 통해 게임을 시작한다.
 			judge.gameStart();
 			
 		}

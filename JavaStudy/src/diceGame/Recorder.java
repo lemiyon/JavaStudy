@@ -1,6 +1,6 @@
 package diceGame;
 
-import java.util.HashMap;
+
 import java.util.Vector;
 
 /*
@@ -40,12 +40,13 @@ public class Recorder {
 	//게임의 중간 과정을 기록한다.
 	Vector<String> logs;
 
-	
+	//기록원의 생성자. 게임의 중간 과정을 기록할 벡터를 초기화 한다.
 	Recorder()
 	{
 		logs = new Vector<String>();
 	}
 	
+	//게임의 내용을 기록(콘솔 창에 출력, 벡터에 출력 내용 기록)한다.
 	void recordGame(Player player1, Player player2)
 	{
 	String log = "";

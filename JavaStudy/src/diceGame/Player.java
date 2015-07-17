@@ -17,15 +17,16 @@ import diceGame.FraudDice.FraudMode;
 
 public class Player {
 
-	String name;
-	Dice dice;
-	int score;
+	String name; //플레이어의 이름. 초기화 시에 받는다.
+	Dice dice; //일반 플레이어의 주사
+	int score;//점수의 합계를 저
 	
-	//각각에 대한 get, set 메소드
+	//이름을 반환한다.
 	public String getName() {
 		return name;
 	}
 
+	//점수를 반환한다.
 	public int getScore() {
 		return score;
 	}
@@ -39,11 +40,12 @@ public class Player {
 		//사용자가 입력한 이름으로 이름을 만들어 준다.
 		this(); //score를 0으로 초기화 한다.
 		this.name = name;
-		//일반 플레이어이므로 
+		//일반 플레이어이므로 일반 주사위를 생성한다.
 		this.dice = new Dice();
 	}
 	
 	
+	//주사위를 던져 그 결과를 합계점수에 더한다.
 	void tossDice()
 	{
 		score += dice.toss();
@@ -51,26 +53,32 @@ public class Player {
 	
 }
 
+//
 class FraudPlayer extends Player
 {
+	//사기꾼 플레이어는 사기 주사위 Fraud를 사용합니다.
 	FraudDice dice;
 	
-	//FraudPlayer의 생성자. 점수는 
+	//FraudPlayer의 생성자. 점수는 상위 클래 생성자 player()에서 초기화 한다.
 	FraudPlayer(String name) {
-		this.name = name;
-		this.dice = new FraudDice();
+		this.name = name; //이름을 초기화 한다.
+		this.dice = new FraudDice(); //사용하는 dice는  
 		// TODO Auto-generated constructor stub
 	}
 
+	//주사위를 던진다. 다만, 던지기 전에 상대방 플레이어의 점수를 보고, 주사위 레벨을 조정한다.
 	void tossDice(){
+		//Judge객체를 통해 상대편의 점수를 얻는다.
 		adjustFraudDiceLevel(Judge.getScore(this));
 		score += dice.toss();
-	}
 
+	}
+	//주사위의 레벨을 조건에 맞춰 조한다.
 	void adjustFraudDiceLevel(int othersScore)
 	{
 		if((score - othersScore) >= 6)
 		{
+			//주사위의 레벨을 조정한다.
 			setDiceMode(FraudMode.WEAK);
 		}
 		else if((score - othersScore) < 0)
@@ -83,11 +91,13 @@ class FraudPlayer extends Player
 		}
 	}
 	
+	//기록원 객체를 위해 주사위의 모드를 반환한다.
 	public FraudMode getDiceMode()
 	{
 		return dice.getMode();
 	}
 	
+	//주사위의 모드를 조정한다.
 	void setDiceMode(FraudMode newMode)
 	{
 		dice.setMode(newMode);
